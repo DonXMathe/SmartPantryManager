@@ -22,6 +22,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddEditItemActivity" />
+        <activity android:name=".RecipesActivity" />
+
     </application>
 
 </manifest>
