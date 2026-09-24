@@ -1,9 +1,14 @@
 package com.example.smartpantrymanager;
 
+
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.Menu;
+import android.view.MenuItem;
+import com.google.android.material.appbar.MaterialToolbar;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +33,9 @@ public class MainActivity extends AppCompatActivity implements PantryAdapter.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
 
         db = new DatabaseHelper(this);
 
@@ -83,5 +91,31 @@ public class MainActivity extends AppCompatActivity implements PantryAdapter.OnI
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
+
+
+
+
+
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.menu_recipes) {
+            startActivity(new Intent(this, RecipesActivity.class));
+            return true;
+        } else if (id == R.id.menu_suggested) {
+            startActivity(new Intent(this, SuggestedActivity.class));
+            return true;
+        } else if (id == R.id.menu_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
