@@ -34,6 +34,21 @@ public class AddEditItemActivity extends AppCompatActivity {
 
         editingId = getIntent().getIntExtra(EXTRA_ID, -1);
 
+        // If we're editing, load the existing item and pre-fill the fields.
+        if (editingId != -1) {
+            PantryItem existing = db.getPantryItemById(editingId);
+            if (existing != null) {
+                editName.setText(existing.getName());
+                editQuantity.setText(String.valueOf(existing.getQuantity()));
+                editUnit.setText(existing.getUnit());
+                editCategory.setText(existing.getCategory());
+                editExpiry.setText(existing.getExpirationDate());
+                setTitle("Edit Item");
+            }
+        } else {
+            setTitle("Add Item");
+        }
+
         buttonSave.setOnClickListener(v -> saveItem());
         buttonCancel.setOnClickListener(v -> finish());
     }
@@ -81,8 +96,13 @@ public class AddEditItemActivity extends AppCompatActivity {
 
         String expiryValue = TextUtils.isEmpty(expiry) ? null : expiry;
 
-        db.addPantryItem(name, quantity, unit, category, expiryValue);
-        Toast.makeText(this, "Item saved", Toast.LENGTH_SHORT).show();
+        if (editingId != -1) {
+            db.updatePantryItem(editingId, name, quantity, unit, category, expiryValue);
+            Toast.makeText(this, "Item updated", Toast.LENGTH_SHORT).show();
+        } else {
+            db.addPantryItem(name, quantity, unit, category, expiryValue);
+            Toast.makeText(this, "Item saved", Toast.LENGTH_SHORT).show();
+        }
         finish();
     }
 }
