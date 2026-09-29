@@ -1,20 +1,18 @@
 package com.example.smartpantrymanager;
 
-
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
-import android.widget.Toast;
 import android.view.Menu;
 import android.view.MenuItem;
-import com.google.android.material.appbar.MaterialToolbar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -33,9 +31,9 @@ public class MainActivity extends AppCompatActivity implements PantryAdapter.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         db = new DatabaseHelper(this);
 
@@ -49,6 +47,10 @@ public class MainActivity extends AppCompatActivity implements PantryAdapter.OnI
 
         fabAdd.setOnClickListener(v -> {
             startActivity(new Intent(MainActivity.this, AddEditItemActivity.class));
+        });
+
+        findViewById(R.id.button_suggested).setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, SuggestedActivity.class));
         });
     }
 
@@ -91,12 +93,8 @@ public class MainActivity extends AppCompatActivity implements PantryAdapter.OnI
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
-
-
-
-
-
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);

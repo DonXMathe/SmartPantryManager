@@ -308,4 +308,53 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             db.insert(TABLE_RECIPE_INGREDIENTS, null, iv);
         }
     }
+    // ---------------- STRICT MATCHING ----------------
+
+    /**
+     * Returns every recipe whose required ingredients are all present
+     * in the pantry, in at least the required quantity.
+     */
+    public List<Recipe> getStrictMatchedRecipes() {
+        List<Recipe> matched = new ArrayList<>();
+        List<Recipe> allRecipes = getAllRecipes();
+        List<PantryItem> pantry = getAllPantryItemsAsList();
+
+        for (Recipe recipe : allRecipes) {
+            if (canMakeRecipe(recipe.getId(), pantry)) {
+                matched.add(recipe);
+            }
+        }
+        return matched;
+    }
+
+    private boolean canMakeRecipe(int recipeId, List<PantryItem> pantry) {
+        List<RecipeIngredient> required = getIngredientsForRecipe(recipeId);
+        if (required.isEmpty()) return false;
+
+        for (RecipeIngredient req : required) {
+            boolean satisfied = false;
+            for (PantryItem item : pantry) {
+                if (normalizeName(item.getName()).equals(normalizeName(req.getIngredientName()))
+                        && item.getQuantity() >= req.getQuantity()) {
+                    satisfied = true;
+                    break;
+                }
+            }
+            if (!satisfied) return false;
+        }
+        return true;
+    }
+
+    private String normalizeName(String s) {
+        if (s == null) return "";
+        String n = s.trim().toLowerCase();
+        if (n.endsWith("es") && n.length() > 3) {
+            n = n.substring(0, n.length() - 2);
+        } else if (n.endsWith("s") && n.length() > 2) {
+            n = n.substring(0, n.length() - 1);
+        }
+        return n;
+    }
+
+
 }

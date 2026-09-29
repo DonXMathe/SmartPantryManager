@@ -46,4 +46,14 @@
         android:contentDescription="Add pantry item"
         android:src="@android:drawable/ic_input_add" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_suggested"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="16dp"
+        android:text="Suggested" />
+
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
